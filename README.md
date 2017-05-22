@@ -3,7 +3,7 @@
 Slack bot that parse sent messages for embedded ConnectWise ticket numbers and post a
 message of said ticket number. ConnectWise ticket numbers must begin with a `#` symbol.
 
-![](./resources/example.png)#
+![](./resources/example.png)
 
 ## Setup Instructions
 
