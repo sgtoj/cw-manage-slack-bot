@@ -2,7 +2,7 @@ const defaults = {
     config: {
         "app": {
             "environment": "prod",
-            "port": 3000
+            "port": 80
         },
         "slack": {
             "token": ""
