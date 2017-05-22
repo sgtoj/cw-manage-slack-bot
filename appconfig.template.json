@@ -1,0 +1,15 @@
+{
+    "app": {
+        "environment": "prod",
+        "port": 80
+    },
+    "slack": {
+        "token": ""
+    },
+    "cwmanage": {
+        "companyId": "",
+        "companyUrl": "",
+        "publicKey": "",
+        "privateKey": ""
+    }
+}
