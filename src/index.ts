@@ -2,7 +2,7 @@ import * as fs from "fs";
 import defaults from "./data/defaults";
 import { App, AppConfig } from "./app";
 
-const CONFIG_PATH = process.env.CONFIG_PATH || "./dev/config.json";
+const CONFIG_PATH = process.env.CONFIG_PATH || "./appconfig.json";
 
 let config: AppConfig  = Object.assign({}, defaults.config);
 
