@@ -1,0 +1,35 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "protocol": "inspector",
+            "name": "Server - Local Debug",
+            "program": "${workspaceRoot}/out/index.js",
+            "sourceMaps": true,
+            "smartStep": true,
+            "showAsyncStacks": true,
+            "env": {
+                "NODE_ENV": "development"
+            }
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "protocol": "inspector",
+            "name": "Mocha - Local Debug",
+            "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
+            "sourceMaps": true,
+            "smartStep": true,
+            "showAsyncStacks": true,
+            "args": [
+                "out/**/*.Test.js",
+                "--no-timeouts"
+            ],
+            "env": {
+                "NODE_ENV": "development"
+            }
+        }
+    ]
+}

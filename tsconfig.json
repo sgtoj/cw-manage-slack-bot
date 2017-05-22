@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "esnext",
+        "outDir": "out",
+        "noLib": false,
+        "sourceMap": true,
+        "rootDir": "src",
+        "declaration": false,
+        "allowJs": false,
+        "experimentalDecorators": true,
+        "pretty": true,
+        "noImplicitAny": false,
+        "alwaysStrict": true
+    }
+}

@@ -1,0 +1,11 @@
+# node
+node_modules
+tmp
+*.map
+*.log
+
+# typescript
+out
+
+# secrets
+dev/config.json
