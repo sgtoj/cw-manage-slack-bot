@@ -8,4 +8,4 @@ tmp
 out
 
 # secrets
-dev/config.json
+appconfig.json
