@@ -1,9 +1,11 @@
 # Simple ConnectWise Manage Slack Bot
 
-Slack bot that parse sent messages for ConnectWise ticket numbers and post a
-message of said ticket number.
+Slack bot that parse sent messages for embedded ConnectWise ticket numbers and post a
+message of said ticket number. ConnectWise ticket numbers must begin with a `#` symbol.
 
-## Instructions
+![](./resources/example.png)#
+
+## Setup Instructions
 
 ### Slack
 
