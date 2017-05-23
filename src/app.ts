@@ -1,16 +1,13 @@
 import * as http from "http";
 import * as express from "express";
 
-import { HandlerServer } from "./server/server";
+import { HandlerServer, HandlerServerConfig } from "./server/server";
 import { CWManageConfig } from "./cwmanage/client";
 import cwmanage from "./cwmanage/client";
 import bot from "./bot/bot";
 
 export interface AppConfig {
-    app: {
-        environment: string;
-        port: number;
-    };
+    server: HandlerServerConfig;
     slack: { token: string; };
     cwmanage: CWManageConfig;
 }
@@ -20,39 +17,25 @@ export class App {
     private svrWebhook: http.Server;
     private config: AppConfig;
 
-    constructor () {
-        this.appWebhook = HandlerServer.bootstrap().app;
-        this.svrWebhook = http.createServer(this.appWebhook);
-    }
-
-    public configure (config: AppConfig) {
+    constructor (config: AppConfig) {
         this.config = config;
-        this.config.app.port = this.normalizePort(config.app.port || 3000);
 
-        this.appWebhook.set("port", this.config.app.port);
-        cwmanage.configure(config.cwmanage);
-        bot.configure(config.slack);
+        let webhookHandler = HandlerServer.bootstrap(config.server);
+        this.appWebhook = webhookHandler.app;
+        this.svrWebhook = http.createServer(this.appWebhook);
+
+        this.configure();
     }
 
     public launch () {
-        this.svrWebhook.listen(this.config.app.port);
+        this.svrWebhook.listen(this.config.server.port);
         this.svrWebhook.on("error", this.onError.bind(this));
         this.svrWebhook.on("listening", this.onListening.bind(this));
     }
 
-    /**
-     * Normalize a port into a number, string, or false.
-     */
-    private normalizePort(val) {
-        let port = parseInt(val, 10);
-
-        if (isNaN(port))
-            return val;
-
-        if (port >= 0)
-            return port;
-
-        return false;
+    private configure () {
+        cwmanage.configure(this.config.cwmanage);
+        bot.configure(this.config.slack);
     }
 
     /**
@@ -62,9 +45,9 @@ export class App {
         if (error.syscall !== "listen")
             throw error;
 
-        let bind = typeof this.config.app.port === "string"
-            ? "Pipe " + this.config.app.port
-            : "Port " + this.config.app.port;
+        let bind = typeof this.config.server.port === "string"
+            ? "Pipe " + this.config.server.port
+            : "Port " + this.config.server.port;
 
         // handle specific listen errors with friendly messages
         switch (error.code) {

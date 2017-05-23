@@ -16,13 +16,13 @@ if (fs.existsSync(CONFIG_PATH)) {
     }
 }
 
-config.app.port = process.env.APP_PORT || config.app.port;
 config.slack.token = process.env.SLACK_TOKEN || config.slack.token;
+config.server.port = process.env.SERVER_PORT || config.server.port;
+config.server.basePath = process.env.SERVER_BASEPATH || config.server.basePath;
 config.cwmanage.companyId = process.env.CWMANAGE_COMPANYID || config.cwmanage.companyId;
 config.cwmanage.companyUrl = process.env.CWMANAGE_COMPANYURL || config.cwmanage.companyUrl;
 config.cwmanage.publicKey = process.env.CWMANAGE_PUBLICKEY || config.cwmanage.publicKey;
 config.cwmanage.privateKey = process.env.CWMANAGE_PRIVATEKEY || config.cwmanage.privateKey;
 
-const app = new App();
-app.configure(config);
+const app = new App(config);
 app.launch();

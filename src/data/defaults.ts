@@ -1,8 +1,8 @@
 const defaults = {
     config: {
-        "app": {
-            "environment": "prod",
-            "port": 80
+        "server": {
+            "port": 80,
+            "basePath": ""
         },
         "slack": {
             "token": ""
