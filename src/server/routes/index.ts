@@ -12,7 +12,7 @@ export class IndexRoute extends BaseRoute {
     }
 
     public get(req: Request, res: Response, next: NextFunction) {
-        res.status(200);
+        res.sendStatus(200);
         res.end();
     }
 
