@@ -32,7 +32,12 @@ export class IndexRoute extends BaseRoute {
     public static create(router: Router) {
         const route = new IndexRoute();
 
-        //  add home page route
+        // add empty return
+        router.get("/", (req: Request, res: Response, next: NextFunction) => {
+            route.get(req, res, next);
+        });
+
+        // add webhook endpoint
         router.post("/", (req: Request, res: Response, next: NextFunction) => {
             route.post(req, res, next);
         });
