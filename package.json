@@ -6,10 +6,10 @@
   "scripts": {
     "compile": "node ./node_modules/typescript/bin/tsc",
     "cp:td-types": "cp ./typings/testdouble/index.d.ts node_modules/testdouble/index.d.ts",
-    "deploy": "npm run docker:build && npm run docker:tag && npm run docker:push",
+    "publish:docker": "npm run recompile && npm run docker:build && npm run docker:tag && npm run docker:push",
     "docker:build": "docker build -f docker/Dockerfile -t cwmanage-slack-bot:dev .",
-    "docker:tag": "docker tag cwmanage-slack-bot:dev cwmanage-slack-bot:latest",
-    "docker:push": "docker push cwmanage-slack-bot:latest",
+    "docker:tag": "docker tag cwmanage-slack-bot:dev sgtoj/cwmanage-slack-bot:latest",
+    "docker:push": "docker push sgtoj/cwmanage-slack-bot:latest",
     "dev:nodemon": "node ./node_modules/nodemon/bin/nodemon --watch 'out/**/*' --ignore 'out/**/*.Test.js' out/index.js",
     "dev:tunnel": "./bin/ngrok.exe http --subdomain=sgtoj 3000",
     "recompile": "rm -rf ./out || true && npm run compile",
