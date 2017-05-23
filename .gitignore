@@ -9,3 +9,4 @@ out
 
 # secrets
 appconfig.json
+docker/docker-compose.dev.yml
