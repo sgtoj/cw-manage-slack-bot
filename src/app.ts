@@ -38,9 +38,6 @@ export class App {
         bot.configure(this.config.slack);
     }
 
-    /**
-     * Event listener for HTTP server "error" event.
-     */
     private onError(error) {
         if (error.syscall !== "listen")
             throw error;
@@ -64,9 +61,6 @@ export class App {
         }
     }
 
-    /**
-     * Event listener for HTTP server "listening" event.
-     */
     private onListening() {
         let addr = this.svrWebhook.address();
         let bind = typeof addr === "string"
