@@ -34,7 +34,7 @@ export class SlackBot {
         if (callback) {
             callback.handle(bot, event);
         } else {
-            console.log(callback);
+            // console.log(event);
         }
     }
 

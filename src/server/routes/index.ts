@@ -19,7 +19,7 @@ export class IndexRoute extends BaseRoute {
     public post(req: Request, res: Response, next: NextFunction) {
         const payload: SlackEventMetaData = req.body;
 
-        console.log(`New Request: ${JSON.stringify(payload)}`);
+        // console.log(`New Request: ${JSON.stringify(payload)}`);
 
         const handler = slackEventHandlers.find(handler => {
             return handler.type === payload.type;

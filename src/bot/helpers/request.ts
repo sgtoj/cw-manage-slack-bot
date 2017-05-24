@@ -3,7 +3,7 @@ import * as https from "https";
 export async function post (option, body?): Promise<any> {
 
     return new Promise ((resolve, reject) => {
-        console.log(option);
+
         const request = https.request(option, res => {
             let body = "";
 
