@@ -1,10 +1,12 @@
 import { SlackEvent } from "../../slack/interfaces";
-import { SlackBot } from "../bot";
+import { Team } from "../../teams/team";
+import { SlackApiClient } from "../api/client";
+
 import { Message } from "./message";
 
 export interface Handler {
     type: string;
-    handle(bot: SlackBot, event: SlackEvent): void;
+    handle(team: Team, event: SlackEvent, apiClient: SlackApiClient): void;
 }
 
 const handlers: Array<Handler> = [

@@ -1,9 +1,9 @@
-import { extractCWManageTicketNumber } from "../helpers/filter";
+import { Team } from "../../teams/team";
 import { SlackEvent } from "../../slack/interfaces";
 import { CWManageTicket } from "../../cwmanage/interface";
+import { SlackApiClient } from "../api/client";
+import { extractCWManageTicketNumber } from "../helpers/filter";
 import { formatTicketMessage } from "../formatter/ticket";
-import { SlackBot } from "../bot";
-import cwmanage from "../../cwmanage/client";
 
 export class Message {
 
@@ -11,27 +11,31 @@ export class Message {
        return "message";
     }
 
-    public static async handle(bot: SlackBot, event: SlackEvent) {
-        if (event.previous_message) return null;
+    public static async handle(team: Team, event: SlackEvent, apiClient: SlackApiClient) {
+        if (this.isEditedMessage(event)) return;
 
-        let ticketNumbers = extractCWManageTicketNumber(event.text);
-        if (!ticketNumbers) return null;
+        let numbers = extractCWManageTicketNumber(event.text);
+        if (!numbers) return null;
 
-        let tickets = await this.tickets(ticketNumbers);
+        let tickets = await this.tickets(team, numbers);
         if (tickets.length <= 0) return null;
 
-        let message = formatTicketMessage(tickets);
-        message.token = bot.token;
-        message.channel = event.channel;
-
-        bot.client.post("chat.postMessage", message.stringify());
+        this.send(event.channel, tickets, apiClient);
     }
 
-    private static async tickets (ticketNumbers: Array<string>) {
+    private static async send(channel: string, tickets: Array<CWManageTicket>, apiClient: SlackApiClient) {
+        let message = formatTicketMessage(tickets);
+        message.channel = channel;
+
+        apiClient.post("chat.postMessage", message);
+    }
+
+
+    private static async tickets (team: Team, numbers: Array<string>) {
         let tickets = Array<CWManageTicket>();
 
-        for (let ticketNumber of ticketNumbers) {
-            let ticket = await cwmanage.findTicket(ticketNumber);
+        for (let num of numbers) {
+            let ticket = await team.cwmanage.findTicket(num);
             if (!ticket)
                 continue;
             tickets.push(ticket);
@@ -39,5 +43,10 @@ export class Message {
 
         return tickets;
     }
+
+    private static isEditedMessage(event: SlackEvent): boolean {
+        return !!event.previous_message;
+    }
+
 
 }

@@ -1,6 +1,7 @@
 import * as https from "https";
 import * as querystring from "querystring";
 
+import { PostPayload } from "./interface";
 import { post } from "../helpers/request";
 
 const PROTOCOL = "https:";
@@ -8,9 +9,22 @@ const HOSTNAME = "slack.com";
 const PATH_PREFIX = "/api";
 const POST_CONTENT_TYPE = "application/x-www-form-urlencoded";
 
-export class SlackApiClient {
+export interface SlackApiClientConfig {
+    authToken: string;
+}
 
-    public async post (method: string, body: any) {
+export class SlackApiClient {
+    private config: SlackApiClientConfig;
+
+    constructor(config: SlackApiClientConfig) {
+        this.config = config;
+    }
+
+    private get authToken() {
+        return this.config.authToken;
+    }
+
+    public async post (method: string, payload: PostPayload) {
         let option: https.RequestOptions = {
             protocol: PROTOCOL,
             hostname: HOSTNAME,
@@ -23,7 +37,8 @@ export class SlackApiClient {
 
         let result: any;
         try {
-            result = await post(option, body);
+            payload.token = this.authToken;
+            result = await post(option, payload.toBody());
         } catch (e) {
             console.error(e);
         }
@@ -32,7 +47,3 @@ export class SlackApiClient {
     }
 
 }
-
-const client = new SlackApiClient();
-Object.freeze(client);
-export default client;

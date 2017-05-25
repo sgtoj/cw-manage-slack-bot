@@ -1,5 +1,5 @@
-import { Payload } from "./payload";
 import * as querystring from "querystring";
+import { ApiPayload, ApiArugment } from "./payload";
 
 interface MessageArugment {
     token: string;
@@ -18,20 +18,12 @@ interface MessageArugment {
     reply_broadcast?: boolean;
 }
 
-export class MessagePayload extends Payload implements MessageArugment {
+export class MessagePayload extends ApiPayload implements MessageArugment {
     protected arguments: MessageArugment;
 
     constructor () {
         super();
         this.arguments.attachments = [];
-    }
-
-    public get token () {
-        return this.arguments.token;
-    }
-
-    public set token (value) {
-        this.arguments.token = value;
     }
 
     public get channel () {
@@ -138,8 +130,8 @@ export class MessagePayload extends Payload implements MessageArugment {
         this.arguments.reply_broadcast = value;
     }
 
-    public stringify () {
-        let payload = super.stringify();
+    public toBody () {
+        let payload = querystring.stringify(this.arguments);
         let excapeAttachments = querystring.escape(JSON.stringify(this.arguments.attachments));
         payload = payload.replace("attachments=", `attachments=${excapeAttachments}`);
 

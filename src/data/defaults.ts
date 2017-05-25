@@ -5,14 +5,18 @@ const defaults = {
             "basePath": ""
         },
         "slack": {
-            "token": ""
+            "authToken": "",
+            "validationToken": ""
         },
-        "cwmanage": {
-            "companyId": "",
-            "companyUrl": "api-na.myconnectwise.net",
-            "publicKey": "",
-            "privateKey": "",
-            "timeout": 5000
+        "team": {
+            "teamId": "main",
+            "cwmanage": {
+                "companyId": "",
+                "companyUrl": "api-na.myconnectwise.net",
+                "publicKey": "",
+                "privateKey": "",
+                "timeout": 5000
+            }
         }
     }
 };

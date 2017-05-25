@@ -53,15 +53,19 @@ The config file is one way to configure the application.
 These enviroment variables can be used to override any settings that is
 defined by default or defined the in the `appconfig.json` (explained above).
 
-- `APP_PORT`: Server port listening for incoming Slack webhook events.
+- `SERVER_PORT`: Server port listening for incoming Slack webhook events.
   - Default: 80
-- `SLACK_TOKEN`: Slack OAuth Access Token for the app.
+- `SERVER_BASEPATH`: Base URL path for incoming slack webhook events.
+  - Example: `/coolbot`
+- `SLACK_AUTHTOKEN`: Slack **OAuth Access Token** for the app.
   - Example: `xoxp-xxx-xxx-xxx-xxx`
+- `SLACK_VALIDATIONTOKEN`: Slack **App Credential Verification Token**.
+  - Example: `zxy098`
 - `CWMANAGE_COMPANYID`: ConnectWise company name.
   - Example: `abctech`
-- `CWMANAGE_COMPANYURL`: Authorized Slack token for the server.
+- `CWMANAGE_COMPANYURL`: FQDN to the ConnectWise server or api server.
   - Default: `api-na.myconnectwise.net`
-- `CWMANAGE_PUBLICKEY`: Authorized Slack token for the server.
+- `CWMANAGE_PUBLICKEY`: ConnectWise API user's public key.
   - Example: `a1B2c3`
-- `CWMANAGE_PRIVATEKEY`: Authorized Slack token for the server.
+- `CWMANAGE_PRIVATEKEY`: ConnectWise API user's private key.
   - Example: `a1B2c3`

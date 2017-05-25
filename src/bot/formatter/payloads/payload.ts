@@ -1,24 +1,25 @@
 import * as querystring from "querystring";
+import { PostPayload } from "../../api/interface";
 
-interface ApiArugment {
-    token: string;
+export interface ApiArugment {
     [name: string]: any;
+    token: string;
 }
 
-export class Payload implements ApiArugment {
+export abstract class ApiPayload implements ApiArugment, PostPayload {
     protected arguments: ApiArugment;
 
     constructor () {
         this.arguments = {} as ApiArugment;
     }
 
-    public get token () {
+    public get token() {
         return this.arguments.token;
     }
 
-    public stringify () {
-        let payload = querystring.stringify(this.arguments);
-        return payload;
+    public set token(value) {
+        this.arguments.token = value;
     }
 
+    public abstract toBody (): string | object;
 }

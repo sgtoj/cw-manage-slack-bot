@@ -1,44 +1,74 @@
 import * as http from "http";
 
-import { SlackEvent } from "../slack/interfaces";
+import { Team } from "../teams/team";
+import { TeamStore } from "../teams/store";
+import { SlackEvent, SlackEventMetaData } from "../slack/interfaces";
 import slackEventHandlers from "./handlers/handlers";
 import { SlackApiClient } from "./api/client";
-import client from "./api/client";
 
+export interface SlackBotConfig {
+    authToken: string;
+    validationToken: string;
+}
 
 export class SlackBot {
-    private _token: string;
-    private _client: SlackApiClient;
+    private readonly apiClient: SlackApiClient;
+    private readonly teamStore: TeamStore;
+    private readonly config: SlackBotConfig;
 
-    constructor() {
-        this._client = client;
+
+    constructor(config: SlackBotConfig, teamStore: TeamStore) {
+        this.config = config;
+
+        this.teamStore = teamStore;
+        this.apiClient = new SlackApiClient({ authToken: this.authToken });
     }
 
-    public get client () {
-        return this._client;
+    public get authToken() {
+        return this.config.authToken;
     }
 
-    public get token() {
-        return this._token;
+    public get validationToken() {
+        return this.config.validationToken;
     }
 
-    public configure (config) {
-        this._token = config.token;
+    public receive(payload: SlackEventMetaData) {
+        if (!this.validate(payload))
+            return;
+
+        this.preproces(payload);
     }
 
-    public handle(event: SlackEvent) {
+    private preproces(payload: SlackEventMetaData) {
+         let team = this.teamStore.find(payload.team_id);
+
+         if (!team)
+            return;
+
+         this.process(team, payload.event);
+    }
+
+    private process(team: Team, event: SlackEvent) {
         const callback = slackEventHandlers.find(cb => {
             return cb.type === event.type;
         });
 
         if (callback) {
-            callback.handle(bot, event);
+            callback.handle(team, event, this.apiClient);
         } else {
-            // console.log(event);
+            console.log(event);
         }
     }
 
-}
+    private validate(payload: SlackEventMetaData): boolean {
+        let failCount = 0;
 
-const bot = new SlackBot();
-export default bot;
+        if (payload.token !== this.validationToken) {
+            failCount++;
+            console.error(`Event Token Mismatch: ${payload.token}`);
+        }
+
+        return failCount === 0;
+    }
+
+}

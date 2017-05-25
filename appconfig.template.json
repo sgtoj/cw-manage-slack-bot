@@ -4,12 +4,16 @@
         "basePath": ""
     },
     "slack": {
-        "token": ""
+        "authToken": "",
+        "validationToken": ""
     },
-    "cwmanage": {
-        "companyId": "",
-        "companyUrl": "",
-        "publicKey": "",
-        "privateKey": ""
+    "team": {
+        "teamId": "main",
+        "cwmanage": {
+            "companyId": "",
+            "companyUrl": "",
+            "publicKey": "",
+            "privateKey": ""
+        }
     }
 }

@@ -12,13 +12,10 @@ export interface CWManageConfig {
 }
 
 export class CWManage {
-    private client: any;
-    private config: CWManageConfig;
+    private readonly config: CWManageConfig;
+    private readonly client: any;
 
-    constructor () {
-    }
-
-    public configure(config: CWManageConfig) {
+    constructor (config: CWManageConfig) {
         this.config = config;
         this.client = new CWManageClient(config);
     }
@@ -37,6 +34,3 @@ export class CWManage {
         return ticket;
     }
 }
-
-const cwmanage = new CWManage();
-export default cwmanage;

@@ -1,36 +1,39 @@
 import * as express from "express";
 import * as bodyParser from "body-parser";
 
+import { SlackBot } from "../bot/bot";
+import { AppLocal } from "./interfaces/app-local";
 import { IndexRoute } from "./routes/index";
 
-export interface HandlerServerConfig {
+interface HandlerAPIApp extends express.Application {
+    locals: AppLocal;
+}
+
+export interface HandlerAPIConfig {
     port?: number;
     basePath?: string;
 }
 
-export class HandlerServer {
-    public app: express.Application;
-    private config: HandlerServerConfig;
+export class HandlerAPI {
+    private config: HandlerAPIConfig;
+    public application: HandlerAPIApp;
 
-    constructor(config?: HandlerServerConfig) {
-        this.config = config || {} as HandlerServerConfig;
+    constructor(config: HandlerAPIConfig, bot: SlackBot) {
+        this.config = config;
+        this.application = express();
 
-        this.app = express();
-
-        this.configure();
+        this.application.locals.bot = bot;
+        this.middlewares();
         this.routes();
     }
 
-    public static bootstrap(config?: HandlerServerConfig): HandlerServer {
-        return new HandlerServer(config);
+    public get interface() {
+        return this.application;
     }
 
-    private configure (): void {
-        if (!this.config.port)
-            this.config.port = 80;
-
-        this.app.use(bodyParser.json());
-        this.app.use(bodyParser.urlencoded({ extended: true }));
+    private middlewares (): void {
+        this.interface.use(bodyParser.json());
+        this.interface.use(bodyParser.urlencoded({ extended: true }));
     }
 
     private routes(): void {
@@ -39,9 +42,9 @@ export class HandlerServer {
         IndexRoute.create(router);
 
         if (!!this.config.basePath && this.config.basePath !== "") {
-            this.app.use(this.config.basePath, router);
+            this.interface.use(this.config.basePath, router);
         } else {
-            this.app.use(router);
+            this.interface.use(router);
         }
     }
 }
