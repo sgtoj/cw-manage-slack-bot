@@ -3,8 +3,15 @@
   "version": "0.0.1",
   "description": "Slack bot for ConnectWise Manage integration.",
   "main": "out/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sgtoj/cw-manage-slack-bot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sgtoj/cw-manage-slack-bot/issues"
+  },
   "scripts": {
-    "compile": "node ./node_modules/typescript/bin/tsc",
+    "compile": "npm run cp:td-types && node ./node_modules/typescript/bin/tsc",
     "cp:td-types": "cp ./typings/testdouble/index.d.ts node_modules/testdouble/index.d.ts",
     "publish:docker": "npm run recompile && npm run docker:build && npm run docker:tag && npm run docker:push",
     "docker:build": "docker build -f docker/Dockerfile -t cw-manage-slack-bot:dev .",
@@ -13,6 +20,7 @@
     "dev:nodemon": "node ./node_modules/nodemon/bin/nodemon --watch 'out/**/*' --ignore 'out/**/*.Test.js' out/index.js",
     "dev:tunnel": "./bin/ngrok.exe http --subdomain=sgtoj 3000",
     "recompile": "rm -rf ./out || true && npm run compile",
+    "refresh": "rm -rf ./node_modules || true && npm install && npm run recompile",
     "start": "node ./out/index.js",
     "test": "node ./node_modules/mocha/bin/mocha 'out/**/*.Test.js' --reporter spec",
     "watch": "node ./node_modules/typescript/bin/tsc --watch"
@@ -25,16 +33,16 @@
     "express": "^4.15.3"
   },
   "devDependencies": {
-    "@types/body-parser": "^1.16.3",
-    "@types/chai": "^3.5.2",
-    "@types/express": "^4.0.35",
+    "@types/body-parser": "^1.16.4",
+    "@types/chai": "^4.0.1",
+    "@types/express": "^4.0.36",
     "@types/mocha": "^2.2.41",
-    "@types/node": "^7.0.18",
-    "chai": "^3.5.0",
-    "mocha": "^3.4.1",
+    "@types/node": "^8.0.14",
+    "chai": "^4.1.0",
+    "mocha": "^3.4.2",
     "nodemon": "^1.11.0",
-    "testdouble": "^2.1.2",
-    "tslint": "^5.2.0",
-    "typescript": "^2.3.2"
+    "testdouble": "^3.2.2",
+    "tslint": "^5.5.0",
+    "typescript": "^2.4.2"
   }
 }
