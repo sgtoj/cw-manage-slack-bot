@@ -7,7 +7,7 @@ const assert = chai.assert;
 
 describe("Functions", async () => {
 
-    describe("extractJiraIssueKey()", async () => {
+    describe("extractCWManageTicketNumber()", async () => {
 
         it("should return null", async () => {
             const msg = `Hi Bob!`;
@@ -17,26 +17,15 @@ describe("Functions", async () => {
             assert.notOk(keys);
         });
 
-        it("should return valid Jira issue key", async () => {
-            const jiraKey = "INF-10";
-            const msg = `Bob, you send ${jiraKey} yet?`;
+        it("should return valid CW ticket number", async () => {
+            const cwTicketNumber = "1234567";
+            const msg = `Bob, you send #${cwTicketNumber} yet?`;
 
             const keys = extractCWManageTicketNumber(msg);
 
             assert.ok(keys);
             assert.isArray(keys);
-            assert.equal(keys[0], jiraKey);
-        });
-
-        it("should return valid Jira issue key", async () => {
-            const jiraKey = "INF-10";
-            const msg = `Bob, you send ${jiraKey} yet?`;
-
-            const keys = extractCWManageTicketNumber(msg);
-
-            assert.ok(keys);
-            assert.isArray(keys);
-            assert.equal(keys[0], jiraKey);
+            assert.equal(keys[0], cwTicketNumber);
         });
 
     });
