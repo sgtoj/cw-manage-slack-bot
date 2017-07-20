@@ -10,7 +10,7 @@ interface HandlerAPIApp extends express.Application {
 }
 
 export interface HandlerAPIConfig {
-    port?: number;
+    port?: string | number;
     basePath?: string;
 }
 
