@@ -5,17 +5,29 @@ message of said ticket number. ConnectWise ticket numbers must begin with a `#` 
 
 ![](./resources/example.png)
 
-## Setup Instructions
+## Instructions
 
-### Slack
+### How To Use
+
+- Complete the **Installation** Instructions
+- Add the Bot user to channel, group, or direct message to listen for CW
+  tickets.
+
+### Installation
+
+#### Slack
 
 - Create a new [Slack App](https://api.slack.com/apps)
   - Give it a name and assign it desired team.
+- Add **Bot Users**
+  - Example: `@cwbot`
 - Turn on Event Subscription
   - Can *not* assign **Request URL** yet.
-- Subscribe to Team Events:
+- Subscribe to _Bot_ Events:
   - `message.channels`
   - `message.groups`
+  - `message.im`
+  - `message.mpim`
 - Add Permissions:
   - `chat:write:bot`
 - Install App
@@ -23,7 +35,7 @@ message of said ticket number. ConnectWise ticket numbers must begin with a `#` 
 - Add **Request URL** for Event Subscriptions
   - This only has to be done once.
 
-### Application
+#### Application
 
 - Open Terminal or Command Prompt
 - Clone Repository
@@ -39,7 +51,7 @@ message of said ticket number. ConnectWise ticket numbers must begin with a `#` 
 - Start App
   - `npm start`
 
-#### Config File
+##### Config File
 
 The config file is one way to configure the application.
 
@@ -48,7 +60,7 @@ The config file is one way to configure the application.
   - Git will ignore the `appconfig.json` file.
 - Fill in the blank values in the `appconfig.json` file.
 
-#### Environment Variabels
+##### Environment Variabels
 
 These enviroment variables can be used to override any settings that is
 defined by default or defined the in the `appconfig.json` (explained above).
