@@ -1,0 +1,21 @@
+version: "3.0"
+services:
+
+  cw-manage-slack-bot:
+    image: "your-cw-slack-bot:local"
+    build:
+      context: ..
+      dockerfile: "docker/Dockerfile"
+    container_name: "cw-manage-slack-bot"
+    environment:
+      - "SLACK_AUTHTOKEN=xoxp-xxx-xxx-xxx-xxxxxx"
+      - "SLACK_BOTAUTHTOKEN=xoxb-xxx-xxx-xxx-xxxxxx"
+      - "SLACK_VALIDATIONTOKEN=zxy098"
+      - "SERVER_PORT=3000"
+      - "SERVER_BASEPATH=/"
+      - "CWMANAGE_COMPANYURL=your-cw.example.com"
+      - "CWMANAGE_COMPANYID=acme"
+      - "CWMANAGE_PUBLICKEY=a1B2c3"
+      - "CWMANAGE_PRIVATEKEY=a1B2c3"
+    ports:
+      - 3000:3000
