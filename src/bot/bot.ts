@@ -8,6 +8,7 @@ import { SlackApiClient } from "./api/client";
 
 export interface SlackBotConfig {
     authToken: string;
+    botAuthToken: string;
     validationToken: string;
 }
 
@@ -21,11 +22,11 @@ export class SlackBot {
         this.config = config;
 
         this.teamStore = teamStore;
-        this.apiClient = new SlackApiClient({ authToken: this.authToken });
+        this.apiClient = new SlackApiClient({ authToken: this.botAuthToken });
     }
 
-    public get authToken() {
-        return this.config.authToken;
+    public get botAuthToken() {
+        return this.config.botAuthToken;
     }
 
     public get validationToken() {

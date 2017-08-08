@@ -71,6 +71,8 @@ defined by default or defined the in the `appconfig.json` (explained above).
   - Example: `/coolbot`
 - `SLACK_AUTHTOKEN`: Slack **OAuth Access Token** for the app.
   - Example: `xoxp-xxx-xxx-xxx-xxx`
+- `SLACK_BOTAUTHTOKEN`: Slack **Bot User OAuth Access Token** for the app.
+  - Example: `xoxb-xxx-xxx-xxx-xxx`
 - `SLACK_VALIDATIONTOKEN`: Slack **App Credential Verification Token**.
   - Example: `zxy098`
 - `CWMANAGE_COMPANYID`: ConnectWise company name.

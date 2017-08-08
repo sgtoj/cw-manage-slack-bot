@@ -6,6 +6,7 @@ const defaults = {
         },
         "slack": {
             "authToken": "",
+            "botAuthToken": "",
             "validationToken": ""
         },
         "team": {

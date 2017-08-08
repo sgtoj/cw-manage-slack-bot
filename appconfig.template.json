@@ -5,6 +5,7 @@
     },
     "slack": {
         "authToken": "",
+        "botAuthToken": "",
         "validationToken": ""
     },
     "team": {
