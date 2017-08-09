@@ -55,15 +55,24 @@ export class SlackBot extends EventEmitter {
     }
 
     private process(team: Team, event: SlackEvent) {
-        const callback = slackEventHandlers.find(cb => {
+        const handler = slackEventHandlers.find(cb => {
             return cb.match(event);
         });
 
-        if (!callback) {
+        if (!handler) {
             this.emit("noBotHandler", event);
         } else {
-            this.emit("eventHandled", event);
-            callback.handle(team, event, this.apiClient);
+            let eventCopy = JSON.parse(JSON.stringify(event));
+
+            try {
+                // mask the text of message for privacy
+                eventCopy.text = eventCopy.text.replace(/./g, "*");
+            } catch (e) {
+                // ignore error
+            }
+
+            this.emit("eventHandled", eventCopy);
+            handler.handle(team, event, this.apiClient);
         }
     }
 
