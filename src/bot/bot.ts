@@ -1,4 +1,5 @@
 import * as http from "http";
+import { EventEmitter } from "events";
 
 import { Team } from "../teams/team";
 import { TeamStore } from "../teams/store";
@@ -12,17 +13,19 @@ export interface SlackBotConfig {
     validationToken: string;
 }
 
-export class SlackBot {
+export class SlackBot extends EventEmitter {
     private readonly apiClient: SlackApiClient;
     private readonly teamStore: TeamStore;
     private readonly config: SlackBotConfig;
 
 
     constructor(config: SlackBotConfig, teamStore: TeamStore) {
+        super();
         this.config = config;
 
         this.teamStore = teamStore;
         this.apiClient = new SlackApiClient({ authToken: this.botAuthToken });
+        this.apiClient.on("error", this.onEvent("error"));
     }
 
     public get botAuthToken() {
@@ -41,23 +44,26 @@ export class SlackBot {
     }
 
     private preproces(payload: SlackEventMetaData) {
-         let team = this.teamStore.find(payload.team_id);
+        let team = this.teamStore.find(payload.team_id);
 
-         if (!team)
-            return;
-
-         this.process(team, payload.event);
+        if (!team) {
+            this.emit("unknownTeamId", payload.team_id);
+        } else {
+            team.on("issueNotFound", this.onEvent("issueNotFound"));
+            this.process(team, payload.event);
+        }
     }
 
     private process(team: Team, event: SlackEvent) {
         const callback = slackEventHandlers.find(cb => {
-            return cb.type === event.type;
+            return cb.match(event);
         });
 
-        if (callback) {
-            callback.handle(team, event, this.apiClient);
+        if (!callback) {
+            this.emit("noBotHandler", event);
         } else {
-            console.log(event);
+            this.emit("eventHandled", event);
+            callback.handle(team, event, this.apiClient);
         }
     }
 
@@ -66,10 +72,19 @@ export class SlackBot {
 
         if (payload.token !== this.validationToken) {
             failCount++;
-            console.error(`Event Token Mismatch: ${payload.token}`);
+
+            this.emit("invalidBotToken", payload.token);
         }
 
         return failCount === 0;
+    }
+
+    private onEvent(event: string) {
+        // event relay
+        let fn = (...paylaod) => {
+            this.emit(event, ...paylaod);
+        };
+        return fn.bind(this);
     }
 
 }

@@ -1,3 +1,5 @@
+import { EventEmitter } from "events";
+
 import * as CWManageClient from "connectwise-rest";
 import { CWManageTicket } from "./interface";
 
@@ -11,16 +13,21 @@ export interface CWManageConfig {
     timeout: number;
 }
 
-export class CWManage {
+interface CWManageError {
+    [name: string]: any;
+}
+
+export class CWManage extends EventEmitter {
     private readonly config: CWManageConfig;
     private readonly client: any;
 
-    constructor (config: CWManageConfig) {
+    constructor(config: CWManageConfig) {
+        super();
         this.config = config;
         this.client = new CWManageClient(config);
     }
 
-    public async findTicket (ticketNumber: string): Promise<CWManageTicket> {
+    public async findTicket(ticketNumber: string): Promise<CWManageTicket | undefined> {
         let ticket: CWManageTicket;
 
         try {

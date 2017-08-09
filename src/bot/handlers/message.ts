@@ -7,8 +7,8 @@ import { formatTicketMessage } from "../formatter/ticket";
 
 export class Message {
 
-    public static get type() {
-       return "message";
+    public static match(event: SlackEvent): boolean {
+        return event.type === "message" && this.isValidMessage(event);
     }
 
     public static async handle(team: Team, event: SlackEvent, apiClient: SlackApiClient) {
@@ -31,7 +31,7 @@ export class Message {
     }
 
 
-    private static async tickets (team: Team, numbers: Array<string>) {
+    private static async tickets(team: Team, numbers: Array<string>) {
         let tickets = Array<CWManageTicket>();
 
         for (let num of numbers) {
@@ -44,9 +44,21 @@ export class Message {
         return tickets;
     }
 
+    private static isValidMessage(event: SlackEvent): boolean {
+        if (this.isBotMessage(event))
+            return false;
+
+        if (this.isEditedMessage(event))
+            return false;
+
+        return true;
+    }
+
     private static isEditedMessage(event: SlackEvent): boolean {
         return !!event.previous_message;
     }
 
-
+    private static isBotMessage(event: SlackEvent): boolean {
+        return !!event.subtype && event.subtype === "bot_messasge";
+    }
 }

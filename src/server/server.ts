@@ -1,6 +1,8 @@
 import * as express from "express";
 import * as bodyParser from "body-parser";
+import { EventEmitter } from "events";
 
+import { RequestEmitter } from "./middleware/emitter";
 import { SlackBot } from "../bot/bot";
 import { AppLocal } from "./interfaces/app-local";
 import { IndexRoute } from "./routes/index";
@@ -14,11 +16,12 @@ export interface HandlerAPIConfig {
     basePath?: string;
 }
 
-export class HandlerAPI {
+export class HandlerAPI extends EventEmitter {
     private config: HandlerAPIConfig;
     public application: HandlerAPIApp;
 
     constructor(config: HandlerAPIConfig, bot: SlackBot) {
+        super();
         this.config = config;
         this.application = express();
 
@@ -34,6 +37,7 @@ export class HandlerAPI {
     private middlewares (): void {
         this.interface.use(bodyParser.json());
         this.interface.use(bodyParser.urlencoded({ extended: true }));
+        this.interface.use(RequestEmitter.register(this));
     }
 
     private routes(): void {

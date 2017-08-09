@@ -2,6 +2,8 @@ import * as fs from "fs";
 import defaults from "./data/defaults";
 import { TeamStore } from "./teams/store";
 import { SlackApp, AppConfig } from "./app";
+import { SlackEventMetaData } from "./slack/interfaces";
+import { enableLogging } from "./logging";
 
 const CONFIG_PATH = process.env.CONFIG_PATH || "./appconfig.json";
 
@@ -37,4 +39,6 @@ config.server.basePath = process.env.SERVER_BASEPATH || config.server.basePath;
 
 // launch the bot
 const app = new SlackApp(config, teams);
+
+enableLogging(app);
 app.launch();

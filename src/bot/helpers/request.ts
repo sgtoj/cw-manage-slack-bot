@@ -8,7 +8,6 @@ export async function post (option, body?): Promise<any> {
             let body = "";
 
             res.on("error", err => {
-                console.warn(err);
                 reject(err);
             });
 
@@ -17,7 +16,6 @@ export async function post (option, body?): Promise<any> {
             });
 
             res.on("end", () => {
-                console.log(body);
                 resolve(body);
             });
 

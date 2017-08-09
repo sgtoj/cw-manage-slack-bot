@@ -5,7 +5,7 @@ import { SlackApiClient } from "../api/client";
 import { Message } from "./message";
 
 export interface Handler {
-    type: string;
+    match(event: SlackEvent): boolean;
     handle(team: Team, event: SlackEvent, apiClient: SlackApiClient): void;
 }
 

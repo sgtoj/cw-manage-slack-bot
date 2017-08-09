@@ -6,6 +6,7 @@ export interface SlackEvent {
     ts: string;
     channel: string;
     event_ts: string;
+    subtype?: string;
     previous_message?: {
         type: string;
         user: string;

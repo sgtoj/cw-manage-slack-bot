@@ -1,9 +1,11 @@
 import * as http from "http";
 import * as express from "express";
+import { EventEmitter } from "events";
 
 import { HandlerAPI, HandlerAPIConfig } from "./server/server";
 import { CWManageConfig } from "./cwmanage/client";
 import { SlackBot, SlackBotConfig } from "./bot/bot";
+import { SlackEvent } from "./slack/interfaces";
 import { TeamModel } from "./teams/interfaces";
 import { TeamStore } from "./teams/store";
 
@@ -13,7 +15,7 @@ export interface AppConfig {
     team?: TeamModel;
 }
 
-export class SlackApp {
+export class SlackApp extends EventEmitter {
     private readonly config: AppConfig;
     private readonly bot: SlackBot;
     private readonly api: HandlerAPI;
@@ -23,49 +25,42 @@ export class SlackApp {
 
 
     constructor (config: AppConfig, teams: TeamStore) {
+        super();
         this.config = config;
 
         this.teams = teams;
         this.bot = new SlackBot(this.config.slack, this.teams);
         this.api = new HandlerAPI(config.server, this.bot);
         this.server = http.createServer(this.api.interface);
+        this.registerEventListeners();
     }
 
     public launch () {
         this.server.listen(this.config.server.port);
-        this.server.on("error", this.onError.bind(this));
-        this.server.on("listening", this.onListening.bind(this));
     }
 
-    private onError(error) {
-        if (error.syscall !== "listen")
-            throw error;
+    public registerEventListeners() {
+        this.bot.on("unknownTeamId", this.onEvent("unknownTeamId"));
+        this.bot.on("noBotHandler", this.onEvent("noBotHandler"));
+        this.bot.on("invalidBotToken", this.onEvent("invalidBotToken"));
+        this.bot.on("issueNotFound", this.onEvent("issueNotFound"));
+        this.bot.on("eventHandled", this.onEvent("eventHandled"));
+        this.bot.on("error", this.onEvent("error"));
 
-        let bind = typeof this.config.server.port === "string"
-            ? "Pipe " + this.config.server.port
-            : "Port " + this.config.server.port;
+        this.api.on("get", this.onEvent("getRequest"));
+        this.api.on("post", this.onEvent("postRequest"));
+        this.api.on("error", this.onEvent("error"));
 
-        // handle specific listen errors with friendly messages
-        switch (error.code) {
-            case "EACCES":
-                console.error(`${bind} requires elevated privileges!`);
-                process.exit(1);
-                break;
-            case "EADDRINUSE":
-                console.error(`${bind} is already in use!`);
-                process.exit(1);
-                break;
-            default:
-                throw error;
-        }
+        this.server.on("listening", this.onEvent("listening"));
+        this.server.on("error", this.onEvent("error"));
     }
 
-    private onListening() {
-        let addr = this.server.address();
-        let bind = typeof addr === "string"
-            ? "pipe " + addr
-            : "port " + addr.port;
-        console.info(`Listening on ${bind}`);
+    private onEvent(event: string) {
+        // event relay
+        let fn = (...paylaod: any[]) => {
+            this.emit(event, ...paylaod);
+        };
+        return fn.bind(this);
     }
 
 }
