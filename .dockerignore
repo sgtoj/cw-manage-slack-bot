@@ -1,18 +1,14 @@
 # dot configs
 .git
 .vscode
-
-# folders
-bin
-docker
-src
-
-# dev configs
 .gitignore
 .dockerignore
+
+# dev folders
+bin
+docker
+node_modules
+
+# dev files
 appconfig.json
-appconfig.template.json
-package.json
-tsconfig.json
-tslint.json
-wallaby.js
+*.map
