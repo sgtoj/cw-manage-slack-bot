@@ -12,6 +12,7 @@ const POST_CONTENT_TYPE = "application/x-www-form-urlencoded";
 
 export interface SlackApiClientConfig {
     authToken: string;
+    botAuthToken: string;
 }
 
 export class SlackApiClient extends EventEmitter {
@@ -26,12 +27,16 @@ export class SlackApiClient extends EventEmitter {
         return this.config.authToken;
     }
 
+    private get botAuthToken() {
+        return this.config.botAuthToken;
+    }
+
     public async post(method: string, payload: PostPayload) {
         const option = this.postOption(method);
 
         let result: any;
         try {
-            payload.token = this.authToken;
+            payload.token = this.botAuthToken;
             result = await post(option, payload.toBody());
         } catch (e) {
             this.emit("error", e);

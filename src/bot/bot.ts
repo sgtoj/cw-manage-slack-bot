@@ -23,9 +23,18 @@ export class SlackBot extends EventEmitter {
         super();
         this.config = config;
 
-        this.teamStore = teamStore;
-        this.apiClient = new SlackApiClient({ authToken: this.botAuthToken });
+        let apiConfig = {
+            authToken: this.authToken,
+            botAuthToken: this.botAuthToken
+        };
+        this.apiClient = new SlackApiClient(apiConfig);
         this.apiClient.on("error", this.onEvent("error"));
+
+        this.teamStore = teamStore;
+    }
+
+    public get authToken() {
+        return this.config.authToken;
     }
 
     public get botAuthToken() {
@@ -55,11 +64,11 @@ export class SlackBot extends EventEmitter {
     }
 
     private process(team: Team, event: SlackEvent) {
-        const handler = slackEventHandlers.find(cb => {
+        const callback = slackEventHandlers.find(cb => {
             return cb.match(event);
         });
 
-        if (!handler) {
+        if (!callback) {
             this.emit("noBotHandler", event);
         } else {
             let eventCopy = JSON.parse(JSON.stringify(event));
@@ -72,7 +81,7 @@ export class SlackBot extends EventEmitter {
             }
 
             this.emit("eventHandled", eventCopy);
-            handler.handle(team, event, this.apiClient);
+            callback.handle(team, event, this.apiClient);
         }
     }
 
