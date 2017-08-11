@@ -2,24 +2,15 @@ import { SlackEvent } from "../../slack/interfaces";
 import { Team } from "../../teams/team";
 import { SlackApiClient } from "../api/client";
 
-import { Message, BotMessageConfig } from "./message";
+import { Message } from "./message";
 
-export interface HandlerFunction {
+export interface Handler {
     match(event: SlackEvent): boolean;
     handle(team: Team, event: SlackEvent, apiClient: SlackApiClient): void;
 }
 
-export interface HandlerConfig {
-    messageConfig: BotMessageConfig;
-}
+const handlers: Array<Handler> = [
+    Message
+];
 
-export class HandlerArray extends Array<HandlerFunction> {
-
-    constructor(config: HandlerConfig) {
-        // list of intialized handlers
-        super(
-            new Message(config.messageConfig)
-        );
-    }
-
-}
+export default handlers;

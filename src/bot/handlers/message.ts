@@ -5,23 +5,13 @@ import { SlackApiClient } from "../api/client";
 import { extractCWManageTicketNumber } from "../helpers/filter";
 import { formatTicketMessage } from "../formatter/ticket";
 
-export interface BotMessageConfig {
-    footer?: string;
-    footerIcon: string;
-}
-
 export class Message {
-    private readonly config;
 
-    constructor(config: BotMessageConfig) {
-        this.config = config;
-    }
-
-    public match(event: SlackEvent): boolean {
+    public static match(event: SlackEvent): boolean {
         return event.type === "message" && this.isValidMessage(event);
     }
 
-    public async handle(team: Team, event: SlackEvent, apiClient: SlackApiClient) {
+    public static async handle(team: Team, event: SlackEvent, apiClient: SlackApiClient) {
         if (this.isEditedMessage(event)) return;
 
         let numbers = extractCWManageTicketNumber(event.text);
@@ -33,15 +23,15 @@ export class Message {
         this.send(event.channel, tickets, apiClient);
     }
 
-    private async send(channel: string, tickets: Array<CWManageTicket>, apiClient: SlackApiClient) {
-        let message = formatTicketMessage(tickets, this.config);
+    private static async send(channel: string, tickets: Array<CWManageTicket>, apiClient: SlackApiClient) {
+        let message = formatTicketMessage(tickets);
         message.channel = channel;
 
         apiClient.post("chat.postMessage", message);
     }
 
 
-    private async tickets(team: Team, numbers: Array<string>) {
+    private static async tickets(team: Team, numbers: Array<string>) {
         let tickets = Array<CWManageTicket>();
 
         for (let num of numbers) {
@@ -54,7 +44,7 @@ export class Message {
         return tickets;
     }
 
-    private isValidMessage(event: SlackEvent): boolean {
+    private static isValidMessage(event: SlackEvent): boolean {
         if (this.isBotMessage(event))
             return false;
 
@@ -64,11 +54,11 @@ export class Message {
         return true;
     }
 
-    private isEditedMessage(event: SlackEvent): boolean {
+    private static isEditedMessage(event: SlackEvent): boolean {
         return !!event.previous_message;
     }
 
-    private isBotMessage(event: SlackEvent): boolean {
+    private static isBotMessage(event: SlackEvent): boolean {
         return !!event.subtype && event.subtype === "bot_messasge";
     }
 }

@@ -4,21 +4,19 @@ import { EventEmitter } from "events";
 import { Team } from "../teams/team";
 import { TeamStore } from "../teams/store";
 import { SlackEvent, SlackEventMetaData } from "../slack/interfaces";
-import { HandlerArray, HandlerConfig, HandlerFunction } from "./handlers/handlers";
+import slackEventHandlers from "./handlers/handlers";
 import { SlackApiClient } from "./api/client";
 
 export interface SlackBotConfig {
     authToken: string;
     botAuthToken: string;
     validationToken: string;
-    handlerConfig: HandlerConfig;
 }
 
 export class SlackBot extends EventEmitter {
     private readonly apiClient: SlackApiClient;
     private readonly teamStore: TeamStore;
     private readonly config: SlackBotConfig;
-    private readonly handlers: HandlerArray;
 
 
     constructor(config: SlackBotConfig, teamStore: TeamStore) {
@@ -31,9 +29,8 @@ export class SlackBot extends EventEmitter {
         };
         this.apiClient = new SlackApiClient(apiConfig);
         this.apiClient.on("error", this.onEvent("error"));
-        this.teamStore = teamStore;
 
-        this.handlers = new HandlerArray(this.config.handlerConfig);
+        this.teamStore = teamStore;
     }
 
     public get authToken() {
@@ -52,10 +49,10 @@ export class SlackBot extends EventEmitter {
         if (!this.validate(payload))
             return;
 
-        this.preprocess(payload);
+        this.preproces(payload);
     }
 
-    private preprocess(payload: SlackEventMetaData) {
+    private preproces(payload: SlackEventMetaData) {
         let team = this.teamStore.find(payload.team_id);
 
         if (!team) {
@@ -67,7 +64,7 @@ export class SlackBot extends EventEmitter {
     }
 
     private process(team: Team, event: SlackEvent) {
-        const callback = this.handlers.find(cb => {
+        const callback = slackEventHandlers.find(cb => {
             return cb.match(event);
         });
 

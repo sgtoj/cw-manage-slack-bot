@@ -8,6 +8,5 @@
         "bin/": true,
         "node_modules/": true,
         "out/": true
-    },
-    "typescript.format.enable": true
+    }
 }
