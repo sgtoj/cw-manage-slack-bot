@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-import { Request, Response, NextFunction }  from "express";
+import { Request, Response, NextFunction } from "express";
 
 export class RequestEmitter {
 

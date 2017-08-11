@@ -3,7 +3,7 @@ import { MessagePayload } from "./payloads/message";
 
 const CARD_COLOR = "#0067B1";
 
-export function formatTicketMessage (tickets: Array<CWManageTicket>): MessagePayload {
+export function formatTicketMessage(tickets: Array<CWManageTicket>): MessagePayload {
     let message = new MessagePayload();
 
     for (let ticket of tickets) {
@@ -12,15 +12,15 @@ export function formatTicketMessage (tickets: Array<CWManageTicket>): MessagePay
             "title_link": ticket.url,
             "color": CARD_COLOR,
             "fields": [{
-                    "title": "Status",
-                    "value": ticket.status.name || "Unknown",
-                    "short": true
-                },
-                {
-                    "title": "Contact",
-                    "value": ticket.contact.name || "Unknown",
-                    "short": true
-                }
+                "title": "Status",
+                "value": ticket.status.name || "Unknown",
+                "short": true
+            },
+            {
+                "title": "Contact",
+                "value": ticket.contact.name || "Unknown",
+                "short": true
+            }
             ],
             "footer": ticket.host,
             "footer_icon": "http://i.imgur.com/0Ndqgz3.png",

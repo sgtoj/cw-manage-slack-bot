@@ -1,6 +1,6 @@
 const CWMANAGE_TICKET_PATTERN = /#[0-9]{4,9}/;
 
-export function extractCWManageTicketNumber (message: string | undefined): Array<string> | null {
+export function extractCWManageTicketNumber(message: string | undefined): Array<string> | null {
     if (!message)
         return null;
 

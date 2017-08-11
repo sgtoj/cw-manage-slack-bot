@@ -24,7 +24,7 @@ export class SlackApp extends EventEmitter {
 
 
 
-    constructor (config: AppConfig, teams: TeamStore) {
+    constructor(config: AppConfig, teams: TeamStore) {
         super();
         this.config = config;
 
@@ -35,7 +35,7 @@ export class SlackApp extends EventEmitter {
         this.registerEventListeners();
     }
 
-    public launch () {
+    public launch() {
         this.server.listen(this.config.server.port);
     }
 

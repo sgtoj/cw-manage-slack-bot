@@ -34,7 +34,7 @@ export class HandlerAPI extends EventEmitter {
         return this.application;
     }
 
-    private middlewares (): void {
+    private middlewares(): void {
         this.interface.use(bodyParser.json());
         this.interface.use(bodyParser.urlencoded({ extended: true }));
         this.interface.use(RequestEmitter.register(this));

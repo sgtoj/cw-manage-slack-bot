@@ -21,116 +21,116 @@ interface MessageArugment {
 export class MessagePayload extends ApiPayload implements MessageArugment {
     protected arguments: MessageArugment;
 
-    constructor () {
+    constructor() {
         super();
         this.arguments.attachments = [];
     }
 
-    public get channel () {
+    public get channel() {
         return this.arguments.channel;
     }
 
-    public set channel (value) {
+    public set channel(value) {
         this.arguments.channel = value;
     }
 
-    public get text () {
+    public get text() {
         return this.arguments.text;
     }
 
-    public set text (value) {
+    public set text(value) {
         this.arguments.text = value;
     }
 
-    public get parse () {
+    public get parse() {
         return this.arguments.parse;
     }
 
-    public set parse (value) {
+    public set parse(value) {
         this.arguments.parse = value;
     }
 
-    public get link_names () {
+    public get link_names() {
         return this.arguments.link_names;
     }
 
-    public set link_names (value) {
+    public set link_names(value) {
         this.arguments.link_names = value;
     }
 
-    public get attachments () {
+    public get attachments() {
         return this.arguments.attachments;
     }
 
-    public set attachments (value) {
+    public set attachments(value) {
         this.arguments.attachments = value;
     }
 
-    public get unfurl_links () {
+    public get unfurl_links() {
         return this.arguments.unfurl_links;
     }
 
-    public set unfurl_links (value) {
+    public set unfurl_links(value) {
         this.arguments.unfurl_links = value;
     }
 
-    public get unfurl_media () {
+    public get unfurl_media() {
         return this.arguments.unfurl_media;
     }
 
-    public set unfurl_media (value) {
+    public set unfurl_media(value) {
         this.arguments.unfurl_media = value;
     }
 
-    public get username () {
+    public get username() {
         return this.arguments.username;
     }
 
-    public set username (value) {
+    public set username(value) {
         this.arguments.username = value;
     }
 
-    public get as_user () {
+    public get as_user() {
         return this.arguments.as_user;
     }
 
-    public set as_user (value) {
+    public set as_user(value) {
         this.arguments.as_user = value;
     }
 
-    public get icon_url () {
+    public get icon_url() {
         return this.arguments.icon_url;
     }
 
-    public set icon_url (value) {
+    public set icon_url(value) {
         this.arguments.icon_url = value;
     }
 
-    public get icon_emoji () {
+    public get icon_emoji() {
         return this.arguments.icon_emoji;
     }
 
-    public set icon_emoji (value) {
+    public set icon_emoji(value) {
         this.arguments.icon_emoji = value;
     }
 
-    public get thread_ts () {
+    public get thread_ts() {
         return this.arguments.thread_ts;
     }
 
-    public set thread_ts (value) {
+    public set thread_ts(value) {
         this.arguments.thread_ts = value;
     }
 
-    public get reply_broadcast () {
+    public get reply_broadcast() {
         return this.arguments.reply_broadcast;
     }
 
-    public set reply_broadcast (value) {
+    public set reply_broadcast(value) {
         this.arguments.reply_broadcast = value;
     }
 
-    public toBody () {
+    public toBody() {
         let payload = querystring.stringify(this.arguments);
         let excapeAttachments = querystring.escape(JSON.stringify(this.arguments.attachments));
         payload = payload.replace("attachments=", `attachments=${excapeAttachments}`);

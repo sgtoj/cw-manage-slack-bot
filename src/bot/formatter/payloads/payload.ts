@@ -9,7 +9,7 @@ export interface ApiArugment {
 export abstract class ApiPayload implements ApiArugment, PostPayload {
     protected arguments: ApiArugment;
 
-    constructor () {
+    constructor() {
         this.arguments = {} as ApiArugment;
     }
 
@@ -21,5 +21,5 @@ export abstract class ApiPayload implements ApiArugment, PostPayload {
         this.arguments.token = value;
     }
 
-    public abstract toBody (): string | object;
+    public abstract toBody(): string | object;
 }

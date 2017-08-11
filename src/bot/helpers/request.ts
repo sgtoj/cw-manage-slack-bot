@@ -1,8 +1,8 @@
 import * as https from "https";
 
-export async function post (option, body?): Promise<any> {
+export async function post(option, body?): Promise<any> {
 
-    return new Promise ((resolve, reject) => {
+    return new Promise((resolve, reject) => {
 
         const request = https.request(option, res => {
             let body = "";
