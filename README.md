@@ -83,3 +83,10 @@ defined by default or defined the in the `appconfig.json` (explained above).
   - Example: `a1B2c3`
 - `CWMANAGE_PRIVATEKEY`: ConnectWise API user's private key.
   - Example: `a1B2c3`
+
+### Troubleshooting
+
+#### General
+
+- `git pull` the latest commit
+- execute `npm run refresh`
