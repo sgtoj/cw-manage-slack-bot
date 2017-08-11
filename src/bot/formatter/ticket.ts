@@ -1,9 +1,10 @@
 import { CWManageTicket } from "../../cwmanage/interface";
 import { MessagePayload } from "./payloads/message";
+import { BotMessageConfig } from "../handlers/message";
 
 const CARD_COLOR = "#0067B1";
 
-export function formatTicketMessage (tickets: Array<CWManageTicket>): MessagePayload {
+export function formatTicketMessage (tickets: Array<CWManageTicket>, config: BotMessageConfig): MessagePayload {
     let message = new MessagePayload();
 
     for (let ticket of tickets) {
@@ -22,12 +23,10 @@ export function formatTicketMessage (tickets: Array<CWManageTicket>): MessagePay
                     "short": true
                 }
             ],
-            "footer": ticket.host,
-            "footer_icon": "http://i.imgur.com/0Ndqgz3.png",
+            "footer": config.footer || ticket.host,
+            "footer_icon": config.footerIcon,
             "ts": (new Date()).getTime() / 1000
         };
-
-        // TODO: make footer and footer_icon dynamic
 
         message.attachments.push(attachment);
     }
