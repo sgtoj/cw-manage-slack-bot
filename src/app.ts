@@ -6,13 +6,11 @@ import { HandlerAPI, HandlerAPIConfig } from "./server/server";
 import { CWManageConfig } from "./cwmanage/client";
 import { SlackBot, SlackBotConfig } from "./bot/bot";
 import { SlackEvent } from "./slack/interfaces";
-import { TeamModel } from "./teams/interfaces";
 import { TeamStore } from "./teams/store";
 
 export interface AppConfig {
     server: HandlerAPIConfig;
     slack: SlackBotConfig;
-    team?: TeamModel;
 }
 
 export class SlackApp extends EventEmitter {

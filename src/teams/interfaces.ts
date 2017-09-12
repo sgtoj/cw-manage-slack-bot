@@ -4,7 +4,7 @@ export interface CWManageModel {
     companyUrl: string;
     publicKey: string;
     privateKey: string;
-    timeout: number;
+    timeout: string | number;
 }
 
 export interface TeamModel {

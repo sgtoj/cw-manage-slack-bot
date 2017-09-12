@@ -10,7 +10,7 @@ export interface CWManageConfig {
     companyUrl: string;
     publicKey: string;
     privateKey: string;
-    timeout: number;
+    timeout: string | number;
 }
 
 interface CWManageError {
@@ -23,7 +23,7 @@ export class CWManage extends EventEmitter {
 
     constructor(config: CWManageConfig) {
         super();
-        this.config = config;
+        this.config = this.santize(config);
         this.client = new CWManageClient(config);
     }
 
@@ -39,5 +39,12 @@ export class CWManage extends EventEmitter {
         }
 
         return ticket;
+    }
+
+    private santize(config: CWManageConfig) {
+        if (typeof config.timeout === "string")
+            config.timeout = parseInt(config.timeout);
+
+        return config;
     }
 }
