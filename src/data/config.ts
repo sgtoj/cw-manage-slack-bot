@@ -4,7 +4,10 @@ export const core = {
     "server": {
         "port": env.SERVER_PORT || 80,
         "basePath": env.SERVER_BASEPATH || "",
-        "staticPath": env.SERVER_STATICPATH || "static"
+        "static": {
+            "basePath": env.SERVER_STATIC_BASEPATH || "",
+            "localDir": env.SERVER_STATIC_LOCALDIR || "static"
+        }
     },
     "slack": {
         "authToken": env.SLACK_AUTHTOKEN || "",
