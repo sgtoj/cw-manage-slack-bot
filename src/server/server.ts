@@ -14,6 +14,7 @@ interface HandlerAPIApp extends express.Application {
 export interface HandlerAPIConfig {
     port?: string | number;
     basePath?: string;
+    staticPath: string;
 }
 
 export class HandlerAPI extends EventEmitter {
@@ -34,7 +35,13 @@ export class HandlerAPI extends EventEmitter {
         return this.application;
     }
 
+    protected get basePath() {
+        return this.config.basePath || "/";
+    }
+
     private middlewares(): void {
+
+        this.interface.use(this.basePath, express.static(this.config.staticPath));
         this.interface.use(bodyParser.json());
         this.interface.use(bodyParser.urlencoded({ extended: true }));
         this.interface.use(RequestEmitter.register(this));
@@ -45,10 +52,6 @@ export class HandlerAPI extends EventEmitter {
 
         IndexRoute.create(router);
 
-        if (!!this.config.basePath && this.config.basePath !== "") {
-            this.interface.use(this.config.basePath, router);
-        } else {
-            this.interface.use(router);
-        }
+        this.interface.use(this.basePath, router);
     }
 }
