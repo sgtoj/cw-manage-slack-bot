@@ -40,7 +40,6 @@ export class HandlerAPI extends EventEmitter {
     }
 
     private middlewares(): void {
-
         this.interface.use(this.basePath, express.static(this.config.staticPath));
         this.interface.use(bodyParser.json());
         this.interface.use(bodyParser.urlencoded({ extended: true }));
