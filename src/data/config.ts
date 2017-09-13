@@ -3,7 +3,8 @@ const env = process.env;
 export const core = {
     "server": {
         "port": env.SERVER_PORT || 80,
-        "basePath": env.SERVER_BASEPATH || ""
+        "basePath": env.SERVER_BASEPATH || "",
+        "staticPath": env.SERVER_STATICPATH || "static"
     },
     "slack": {
         "authToken": env.SLACK_AUTHTOKEN || "",
